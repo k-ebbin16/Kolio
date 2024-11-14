@@ -1,14 +1,11 @@
 import { FC } from "react";
-import styles from "./navlinks.module.css";
 import FlipLink from "../FlipLink";
+import styles from "./navlinks.module.css";
+import useNavLinks from "../../hooks/useNavLinks";
 
 const NavLinks: FC = () => {
-    const navigation = [
-        { link_name: "About-Me", to: "about" },
-        { link_name: "Projects", to: "projects" },
-        { link_name: "Let's-Talk", to: "letstalk" },
-    ];
-
+    const navigation = useNavLinks();
+    
     return (
         <nav className={styles.nav}>
             {navigation.map(({ link_name, to }, i) => {
