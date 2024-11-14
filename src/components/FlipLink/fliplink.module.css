@@ -13,9 +13,9 @@
 }
 
 .linkCopy {
+    display: inline-block;
     position: absolute;
-    bottom: 0;
-
+    inset: 0;
 }
 
 .linkOriginalChild {

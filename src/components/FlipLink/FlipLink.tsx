@@ -48,7 +48,7 @@ const FlipLink: FC<FlipLinkProps> = ({ link_name, to }) => {
                   className={styles.linkOriginalChild}
                   key={i}
                   variants={{
-                    initial: { y: 0 },
+                    initial: { y: "0%" },
                     hovered: { y: "-100%" },
                   }}
                   transition={{
@@ -70,7 +70,7 @@ const FlipLink: FC<FlipLinkProps> = ({ link_name, to }) => {
                   key={i}
                   variants={{
                     initial: { y: "100%" },
-                    hovered: { y: 0 },
+                    hovered: { y: "0%" },
                   }}
                   transition={{
                     duration: DURATION,
