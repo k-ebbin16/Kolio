@@ -1,3 +1,9 @@
+.wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
 .navLink {
     line-height: 0.75rem;
     position: relative;
@@ -6,22 +12,15 @@
     /*background-color: white;*/
 }
 
-.wrapper {
-    display: flex;
-    flex-direction: column;
-    gap: 2px;
-}
 
 .linkCopy {
     display: inline-block;
     position: absolute;
     inset: 0;
+    /* transition-timing-function: cubic-bezier(0.075, 0.82, 0.165, 1); */
 }
 
-.linkOriginalChild {
+.inlineBlock {
     display: inline-block;
 }
 
-.linkCopyChild {
-    display: inline-block;
-}

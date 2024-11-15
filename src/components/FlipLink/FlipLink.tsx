@@ -1,94 +1,101 @@
-import { MotionConfig, motion, useAnimationControls } from "framer-motion";
+import { motion, useAnimationControls } from "framer-motion";
 
 import { FC } from "react";
-import { NavLink } from "react-router-dom";
 import StretchedUnderline from "../StretchedUnderline";
 import styles from "./fliplink.module.css";
+import { Link } from "react-router-dom";
 
 interface FlipLinkProps {
-  link_name: string;
-  to: string;
+    link_name: string;
+    to: string;
+    underline: boolean;
 }
 
-const MotionNavLink = motion(NavLink, { forwardMotionProps: true });
+const DURATION = 0.25;
+const STAGGER = 0.04;
+const BEZIER = [0.78, 0, 0.52, 0.51];
 
-const DURATION = 0.008;
-const STAGGER = 0.01;
+const FlipLink: FC<FlipLinkProps> = ({ link_name, to }, underline) => {
+    const underlineControls = useAnimationControls();
 
-const FlipLink: FC<FlipLinkProps> = ({ link_name, to }) => {
-  const controls = useAnimationControls();
+    const handleHover = () => {
+        underlineControls.start("stretch");
+    };
+    const handleUnHover = () => {
+        underlineControls.start("initial");
+    };
 
-  const handleHover = () => {
-    controls.start("stretch");
-  };
-  const handleUnHover = () => {
-    controls.set("initial");
-  };
-
-  return (
-    <div className={styles.wrapper}>
-      <MotionConfig
-        transition={{
-          duration: DURATION,
-          ease: "easeInOut",
-        }}
-      >
-        <MotionNavLink
-          className={styles.navLink}
-          to={to}
-          initial="initial"
-          whileHover="hovered"
-          onMouseEnter={handleHover}
-          onMouseLeave={handleUnHover}
-        >
-          <div>
-            {link_name.split("").map((l, i) => {
-              return (
-                <motion.span
-                  className={styles.linkOriginalChild}
-                  key={i}
-                  variants={{
-                    initial: { y: "0%" },
-                    hovered: { y: "-100%" },
-                  }}
-                  transition={{
-                    duration: DURATION,
-                    ease: "easeInOut",
-                    delay: STAGGER * i,
-                  }}
+    return (
+        <div className={styles.wrapper}>
+            <Link to={to} className={styles.navLink}>
+                <motion.div
+                    style={{ display: "inline-block" }}
+                    initial="initial"
+                    whileHover="hovered"
+                    onMouseEnter={underline && handleHover}
+                    onMouseLeave={underline && handleUnHover}
                 >
-                  {l}
-                </motion.span>
-              );
-            })}
-          </div>
-          <div className={styles.linkCopy}>
-            {link_name.split("").map((l, i) => {
-              return (
-                <motion.span
-                  className={styles.linkCopyChild}
-                  key={i}
-                  variants={{
-                    initial: { y: "100%" },
-                    hovered: { y: "0%" },
-                  }}
-                  transition={{
-                    duration: DURATION,
-                    ease: "easeInOut",
-                    delay: STAGGER * i,
-                  }}
-                >
-                  {l}
-                </motion.span>
-              );
-            })}
-          </div>
-        </MotionNavLink>
-
-        <StretchedUnderline animateControls={controls} />
-      </MotionConfig>
-    </div>
-  );
+                    <div className={styles.linkOriginal}>
+                        {link_name.split("").map((l, i) => {
+                            return (
+                                <motion.span
+                                    variants={{
+                                        initial: {
+                                            y: 0,
+                                        },
+                                        hovered: {
+                                            y: "-200%",
+                                        },
+                                    }}
+                                    transition={{
+                                        duration: DURATION,
+                                        ease: BEZIER,
+                                        delay: STAGGER * i,
+                                    }}
+                                    className={styles.inlineBlock}
+                                    key={i}
+                                >
+                                    {l}
+                                </motion.span>
+                            );
+                        })}
+                    </div>
+                    <div className={styles.linkCopy}>
+                        {link_name.split("").map((l, i) => {
+                            return (
+                                <motion.span
+                                    variants={{
+                                        initial: {
+                                            y: "200%",
+                                        },
+                                        hovered: {
+                                            y: 0,
+                                        },
+                                    }}
+                                    transition={{
+                                        duration: DURATION,
+                                        ease: BEZIER,
+                                        delay: STAGGER * i,
+                                    }}
+                                    className={styles.inlineBlock}
+                                    key={i}
+                                >
+                                    {l}
+                                </motion.span>
+                            );
+                        })}
+                    </div>
+                </motion.div>
+            </Link>
+            {underline && (
+                <StretchedUnderline
+                    DURATION={DURATION}
+                    BEZIER={BEZIER}
+                    animateControls={underlineControls}
+                />
+            )}
+        </div>
+    );
 };
 
 export default FlipLink;
